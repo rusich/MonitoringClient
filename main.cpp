@@ -1,16 +1,23 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "backend.h"
+#include "monitoringdata.h"
+#include <QQmlPropertyMap>
+#include <QQmlContext>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-    qmlRegisterType<Backend>("io.qt.Backend", 1, 0, "Backend");
+//    qmlRegisterType<MonitoringData>("MonitoringData", 1, 0, "MonitoringData");
+
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+//    engine.addImportPath(QCoreApplication::applicationDirPath()+
+//                          QDir::separator()+"imports"+QDir::separator());
+    engine.load(QUrl(QStringLiteral("qrc:/dashboard.qml")));
+    MonitoringData dat(engine.rootContext(), &app);
     if (engine.rootObjects().isEmpty())
         return -1;
 

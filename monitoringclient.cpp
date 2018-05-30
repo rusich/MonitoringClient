@@ -1,7 +1,5 @@
 #include "monitoringclient.h"
 
-
-
 MonitoringClient::MonitoringClient(const QString hostAddress, int portNumber, QObject *parent)
     : QObject(parent), nextMessageSize(0)
 {
@@ -56,10 +54,10 @@ quint64 MonitoringClient::sendMessage(QJsonObject *jsonRequest)
     out << quint16(0) << compressedMessage;
     out.device()->seek(0);
     out << quint16(sendBuff.size() - sizeof(quint16));
-    qDebug()<<"SEND: U:"<<uncompressedMessage.size()
-           << "b C:" << compressedMessage.size()
-           << "b R:" << (float) uncompressedMessage.size()/
-              compressedMessage.size() << "%";
+//    qDebug()<<"SEND: U:"<<uncompressedMessage.size()
+//           << "b C:" << compressedMessage.size()
+//           << "b R:" << (float) uncompressedMessage.size()/
+//              compressedMessage.size() << "%";
     return serverSocket->write(sendBuff);
 }
 
@@ -90,11 +88,11 @@ void MonitoringClient::readMessage()
     }
 }
 
-//void MonitoringClient::gotDisconnection()
-//{
-//    status = false;
-//    emit statusChanged(status);
-//}
+void MonitoringClient::gotDisconnection()
+{
+    status = false;
+    emit statusChanged(status);
+}
 
 void MonitoringClient::closeConnection()
 {

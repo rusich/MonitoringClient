@@ -1,6 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.2
+//import MonitoringData 1.0
 
 Page {
     width: 600
@@ -9,8 +10,12 @@ Page {
 
     title: qsTr("Page 1")
 
+
     Label {
-        text: qsTr("You are on Page 1.")
+        id: ttt
+        text: hosts.server.vfs_fs_size_media_pfree.lastvalue +
+              hosts.server.vfs_fs_size_media_pfree.units
+
         anchors.centerIn: parent
     }
 
@@ -20,6 +25,10 @@ Page {
         y: 81
         text: qsTr("Button")
         Material.background: "#FF0000"
+        onClicked: {
+              console.log(JSON.stringify(hosts.server));
+              console.log(JSON.stringify(hosts.server.vfs_fs_size_media_pfree));
+        }
     }
 
     DelayButton {

@@ -2,33 +2,46 @@
 #define BACKEND_H
 
 #include <QObject>
+#include <QQmlContext>
+#include <QQmlPropertyMap>
+#include <QTimer>
 #include "monitoringclient.h"
 
-class Backend : public QObject
+class MonitoringData : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool currentStatus READ getStatus NOTIFY statusChanged)
+    Q_PROPERTY(QJsonObject data MEMBER data)
 
 public:
-    explicit Backend(QObject *parent = nullptr);
+    explicit MonitoringData(QQmlContext* ctx, QObject *parent = nullptr);
     bool getStatus();
 
 public slots:
     void setStatus(bool newStatus);
-    void receivedSomething(QJsonObject* jsonReply);
+    void parseMessage(QJsonObject* jsonReply);
     void gotError(QAbstractSocket::SocketError err);
     void sendClicked(QString msg);
     void connectClicked();
     void disconnectClicked();
+    void getHostsData();
 
 signals:
     void statusChanged(QString newStatus);
-    void someError(QString err);
+    void networkError(QString err);
     void messageReceived(QJsonObject* jsonReply);
 
 
 private:
     MonitoringClient *client;
+    QJsonObject data;
+    QQmlContext* context;
+    QJsonObject* hostsConfigs;
+    QQmlPropertyMap* hostsConfigsMapping;
+    QJsonObject* hosts;
+    QQmlPropertyMap* hostsMapping;
+    QTimer* dataGetTimer;
+    void loadHosts();
 };
 
 #endif // BACKEND_H

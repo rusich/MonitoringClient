@@ -11,6 +11,8 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QUuid>
+#include <QQmlContext>
+
 class MonitoringClient : public QObject
 {
     Q_OBJECT
@@ -27,6 +29,7 @@ public slots:
     void connected();
     void connectionTimeout();
     void readMessage();
+    void gotDisconnection();
 
 signals:
     void statusChanged(bool);

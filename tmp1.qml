@@ -9,6 +9,25 @@ ApplicationWindow {
     height: 480
     title: qsTr("Stack")
 
+//    MonitoringData {
+//        id: backend
+//        onStatusChanged: {
+//            serverTestPage.textArea.append(serverTestPage.addMsg(newStatus));
+//            if (currentStatus !== true)
+//            {
+//                btn_connect.enabled = true;
+//            }
+//        }
+//        onNetworkError: {
+//            textArea.append(addMsg("Error! " + err));
+//            if (currentStatus !== true)
+//            {
+//                backend.disconnectClicked();
+//            }
+//            btn_connect.enabled = true;
+//        }
+//    }
+
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
 
@@ -56,6 +75,7 @@ ApplicationWindow {
                 }
             }
             ItemDelegate {
+                id: serverTestPage
                 text: qsTr("Server Test")
                 width: parent.width
                 onClicked: {

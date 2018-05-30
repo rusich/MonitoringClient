@@ -3,36 +3,13 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.3
-import io.qt.Backend 1.0
 
 Page {
     id: page
     width: 600
     height: 400
 
-    Backend {
-        id: backend
-        onStatusChanged: {
-            //console.log(currentStatus);
-            textArea.append(addMsg(newStatus));
-            if (currentStatus !== true)
-            {
-                btn_connect.enabled = true;
-            }
-        }
-        onMessageReceived: {
-//            textArea.text = addMsg(msg)+"\n"+textArea.text
-//            textArea.append(addMsg(msg));
-        }
-        onSomeError: {
-            textArea.append(addMsg("Error! " + err));
-            if (currentStatus !== true)
-            {
-                backend.disconnectClicked();
-            }
-            btn_connect.enabled = true;
-        }
-    }
+    property alias textArea: textArea
 
     title: qsTr("Server Test")
 
