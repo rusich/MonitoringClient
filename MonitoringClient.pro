@@ -1,4 +1,4 @@
-QT += quick network core
+QT += charts quick network core
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -38,4 +38,5 @@ HEADERS += \
 
 DISTFILES += \
     hosts/darkstar.json \
-    hosts/server.json
+    hosts/server.json \
+    hosts/macbook.json

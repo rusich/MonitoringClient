@@ -11,6 +11,9 @@
         <file>pages/Server.qml</file>
         <file>dashboard.qml</file>
         <file>functions.js</file>
+        <file>widgets/MemUsage.qml</file>
+        <file>widgets/HorizontalProgressBar.qml</file>
+        <file>widgets/FsUsage.qml</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>

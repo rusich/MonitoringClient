@@ -8,14 +8,19 @@ Item {
     id: item1
     width: 200
     height: width*1.1
-
-    property int cpuloadp: Math.round(100-host.system_cpu_util_idle.lastvalue)
+    property bool isWindows: host.system_cpu_util_all_system_avg1? true: false
+    property int cpuloadp: isWindows?
+                               Math.round(host.system_cpu_util_all_system_avg1.lastvalue):
+                               Math.round(100-host.system_cpu_util_idle.lastvalue)
     WidgetTemplate {
         id: widgetTemplate
         anchors.rightMargin: 0
-        anchors.bottomMargin: -14
+        anchors.bottomMargin:0
         anchors.fill: parent
-        caption: "Загрузка ЦП"
+        lastUpdatedInfo: isWindows?host.system_cpu_util_all_system_avg1.lastclock:
+                             host.system_cpu_util_idle.lastclock
+
+        caption: "ЗАГРУЗКА ЦП"
         RoundPorgressBar {
             id: rpg
             anchors.topMargin: 32
@@ -23,8 +28,9 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             size: parent.width * 0.8
             colorCircle: cpuusLabel.color
-            inPercent: 100-host.system_cpu_util_idle.lastvalue
+            inPercent: cpuloadp
             lineWidth: 5
+
         }
 
         Label {
@@ -72,6 +78,7 @@ Item {
                 font.bold: true
             }
         }
+
 
 
     }

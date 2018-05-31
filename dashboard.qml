@@ -18,7 +18,7 @@ ApplicationWindow {
     property color warningMetricColor: "yellow"
     property color criticalMetricColor: "#FF0300"
     property int normalMetricTop: 50
-    property int warningMetricTop: 70
+    property int warningMetricTop: 79
 
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
@@ -81,8 +81,6 @@ ApplicationWindow {
                 //                anchors.left: parent.left
             }
         }
-
-
     }
 
     Label {

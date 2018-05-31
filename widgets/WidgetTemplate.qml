@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Controls.Material 2.2
 import QtGraphicalEffects 1.0
+import "../functions.js" as JS
 
 Item {
     property color bgColor: "#25252E"
@@ -13,6 +14,7 @@ Item {
     property string caption: "Widget"
     property bool showHeaderLine: true
     property color headerLineColor: "grey"
+    property int lastUpdatedInfo
 
     width: 100
     height: 100
@@ -32,7 +34,7 @@ Item {
         id: bg
         anchors.fill: parent
         color: parent.bgColor
-        radius: 4
+        radius: 2
         border.color: parent.borderColor
         border.width: parent.borderWidth
     }
@@ -43,7 +45,7 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            console.log(JSON.stringify(host.system_cpu_util_idle));
+            console.log(JSON.stringify(host));
         }
         onEntered: {
             bg.color = parent.bgHoverColor;
@@ -76,5 +78,28 @@ Item {
        anchors.topMargin: 5
        color: headerLineColor
        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    Label {
+        id: clockSymbol
+        anchors.right: updateDateTime.left
+        anchors.verticalCenter: updateDateTime.verticalCenter
+        anchors.rightMargin: 3
+        text: qsTr("⌚")
+        font.pointSize: 12
+        color: updateDateTime.color
+        visible: lastUpdatedInfo? true : false
+    }
+
+    Label {
+        id: updateDateTime
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 2
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: 5
+        text:  JS.tsToDT(lastUpdatedInfo)
+        font.pointSize: 7
+        color: "grey"
+        visible: lastUpdatedInfo? true : false
     }
 }

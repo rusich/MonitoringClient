@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include "monitoringdata.h"
 #include <QQmlPropertyMap>
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 //    qmlRegisterType<MonitoringData>("MonitoringData", 1, 0, "MonitoringData");
 
 
