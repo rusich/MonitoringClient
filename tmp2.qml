@@ -1,7 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.2
-//import MonitoringData 1.0
+import "qrc:/widgets"
 
 Page {
     width: 600
@@ -9,7 +9,7 @@ Page {
     property alias button: button
 
     title: qsTr("Page 1")
-
+    CpuUsage {}
 
     Label {
         id: ttt

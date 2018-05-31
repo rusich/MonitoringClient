@@ -10,6 +10,7 @@
         <file>widgets/WidgetTemplate.qml</file>
         <file>pages/Server.qml</file>
         <file>dashboard.qml</file>
+        <file>functions.js</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>

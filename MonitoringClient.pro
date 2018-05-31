@@ -20,12 +20,12 @@ SOURCES += \
 RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH += qrc:/widgets
-QML_IMPORT_PATH += qrc:/pages
+QML_IMPORT_PATH += widgets
+QML_IMPORT_PATH += pages
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH += qrc:/widgets
-QML_DESIGNER_IMPORT_PATH += qrc:/pages
+QML_DESIGNER_IMPORT_PATH = widgets
+QML_DESIGNER_IMPORT_PATH += pages
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -33,7 +33,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    monitoringdata.h \
     monitoringdata.h \
     monitoringclient.h
 

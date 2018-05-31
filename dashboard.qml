@@ -3,8 +3,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
-//import "qrc:/widgets"
-//import "qrc:/pages"
+import "qrc:/widgets"
+import "qrc:/pages"
 
 ApplicationWindow {
     id: window
@@ -45,7 +45,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: "qrc:/pages/Server.qml"
+        initialItem: Server { host: hosts.server }
         anchors.fill: parent
     }
 
@@ -98,7 +98,6 @@ ApplicationWindow {
         id: errorDialog
         title: "Network error"
         onAccepted: {
-            Qt.quit()
         }
     }
 

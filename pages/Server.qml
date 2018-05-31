@@ -1,30 +1,31 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import "qrc:/widgets"
+import "qrc:/pages"
 
 Page {
+    property variant host
     anchors.fill: parent
 
-    title: qsTr("Server")
+    title: host.name
 
     Label {
-        text: hosts.server.ip
+        text: host.ip
         anchors.centerIn: parent
     }
 
-    CpuUsage {
-        x: 77
+    WidgetTemplate {
+        x: 289
         y: 58
-        width: 182
-        height: 184
-        host: hosts.server
+        width: 205
+        height: 132
     }
 
     CpuUsage {
-        x: 324
-        y: 58
-        width: 117
-        height: 119
-        host: hosts.darkstar
+        x: 51
+        y: 39
+        width: 386
+        height: 175
     }
+
 }
