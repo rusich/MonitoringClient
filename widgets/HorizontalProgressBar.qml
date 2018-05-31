@@ -7,9 +7,9 @@ Item {
     width: 200
     height: 18
 
-    property color bgColor: "grey"
+    property color bgColor: "#353638"
     property color color: "green"
-    property double value: 50
+    property double value: 0
     property double from: 0
     property double to: 100
     ProgressBar {
@@ -25,14 +25,14 @@ Item {
 
         background: Rectangle {
             color: container.bgColor
-            radius: 2
+            radius: 3
         }
 
         contentItem: Item {
             Rectangle {
                 width: progressBar.visualPosition * parent.width
                 height: container.height
-                radius: 2
+                radius: 3
                 color: container.color
             }
         }

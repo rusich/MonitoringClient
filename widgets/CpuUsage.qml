@@ -29,7 +29,7 @@ Item {
             size: parent.width * 0.8
             colorCircle: cpuusLabel.color
             inPercent: cpuloadp
-            lineWidth: 5
+            lineWidth: 10
 
         }
 

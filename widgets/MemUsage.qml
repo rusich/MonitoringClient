@@ -87,7 +87,7 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 11
             anchors.top: parent.top
-            anchors.topMargin: 62
+            anchors.topMargin: 63
         }
 
 

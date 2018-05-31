@@ -2,6 +2,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import "qrc:/widgets"
 import "qrc:/pages"
+import jbQuick.Charts 1.0
 
 Page {
     property variant host
@@ -30,11 +31,13 @@ Page {
     }
 
     FsUsage {
-        x: 397
-        y: 57
-        width: 185
-        height: 204
+        x: 342
+        y: 62
+        width: 174
+        height: 105
 
+        disks: ["C:", "D:"]
     }
+
 
 }

@@ -45,7 +45,7 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            console.log(JSON.stringify(host));
+            console.log(JSON.stringify(disks));
         }
         onEntered: {
             bg.color = parent.bgHoverColor;
