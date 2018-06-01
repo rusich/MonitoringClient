@@ -17,10 +17,11 @@ MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(pare
 
     hosts= new QJsonObject();
     hostsMapping = new QQmlPropertyMap(this);
-    hostsConfigs= new QJsonObject();
-    hostsConfigsMapping = new QQmlPropertyMap(this);
+    hostConfigs= new QJsonObject();
+    hostConfigsMapping = new QQmlPropertyMap(this);
 
     context->setContextProperty("hosts", hostsMapping);
+    context->setContextProperty("hostConfigs", hostConfigsMapping);
     context->setContextProperty("backend",this);
 
     dataGetTimer = new QTimer(this);
@@ -93,23 +94,6 @@ void MonitoringData::connectClicked()
     client->connectToServer();
 }
 
-void MonitoringData::sendClicked(QString msg)
-{
-    //tempTest
-    QJsonObject test;
-    test.insert("uuid",QUuid::createUuid().toString());
-    test.insert("requestType","zabbixSingleRequest");
-    QJsonObject zsr;
-    zsr["method"] = "host.get";
-    QJsonObject params = {{"output",QJsonArray({"hostid","host", "name"})},
-                          {"selectInterfaces",QJsonArray({"interfaceid","ip"})}//,
-                          //                          {"hostids",QJsonArray({"10197"})}
-                         };
-    zsr["params"] = params;
-    test["request"] = zsr;
-    client->sendMessage(&test);
-}
-
 void MonitoringData::disconnectClicked()
 {
     client->closeConnection();
@@ -122,11 +106,11 @@ void MonitoringData::getHostsData()
 
 //    this->dataGetTimer->stop();
 
-    foreach (QString host, hostsConfigs->keys()) {
+    foreach (QString host, hostConfigs->keys()) {
         QJsonObject* request = new QJsonObject();
         request->insert("requestType","getHost");
         request->insert("uuid",QUuid::createUuid().toString());
-        request->insert("request", hostsConfigs->value(host));
+        request->insert("request", hostConfigs->value(host));
         client->sendMessage(request);
     }
 }
@@ -156,10 +140,10 @@ void MonitoringData::loadHosts()
                 continue;
             }
 
-            hostsConfigs->insert(jsonObj["host"].toString(),jsonObj);
+            hostConfigs->insert(jsonObj["host"].toString(),jsonObj);
 
-            hostsConfigsMapping->insert(jsonObj["host"].toString(),
-                    QVariant::fromValue(hostsMapping->value(jsonObj["host"].toString())));
+            hostConfigsMapping->insert(jsonObj["host"].toString(),
+                    QVariant::fromValue(hostConfigs->value(jsonObj["host"].toString())));
         }
     }
 }

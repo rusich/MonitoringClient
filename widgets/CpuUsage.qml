@@ -8,17 +8,17 @@ Item {
     id: item1
     width: 200
     height: width*1.1
-    property bool isWindows: host.system_cpu_util_all_system_avg1? true: false
+    property bool isWindows: host["system.cpu.util[all,system,avg1]"]? true: false
     property int cpuloadp: isWindows?
-                               Math.round(host.system_cpu_util_all_system_avg1.lastvalue):
-                               Math.round(100-host.system_cpu_util_idle.lastvalue)
+                               Math.round(host["system.cpu.util[all,system,avg1]"].lastvalue):
+                               Math.round(100-host["system.cpu.util[,idle]"].lastvalue)
     WidgetTemplate {
         id: widgetTemplate
         anchors.rightMargin: 0
         anchors.bottomMargin:0
         anchors.fill: parent
-        lastUpdatedInfo: isWindows?host.system_cpu_util_all_system_avg1.lastclock:
-                             host.system_cpu_util_idle.lastclock
+        lastUpdatedInfo: isWindows?host["system.cpu.util[all,system,avg1]"].lastclock:
+                             host["system.cpu.util[,idle]"].lastclock
 
         caption: "ЗАГРУЗКА ЦП"
         RoundPorgressBar {
@@ -57,7 +57,7 @@ Item {
             Label {
                 id: avg1
                 color: "#92b5fa"
-                text: "avg1: "+ JS.roundPlus(host.system_cpu_load_percpu_avg1.lastvalue,2) +"%"
+                text: "avg1: "+ JS.roundPlus(host["system.cpu.load[percpu,avg1]"].lastvalue,2) +"%"
                 font.bold: true
                 font.pointSize: 7
             }
@@ -65,7 +65,7 @@ Item {
             Label {
                 id: avg5
                 color: "#92b5fa"
-                text:"avg5: "+ JS.roundPlus( host.system_cpu_load_percpu_avg5.lastvalue,2)+"%"
+                text:"avg5: "+ JS.roundPlus(host["system.cpu.load[percpu,avg5]"].lastvalue,2)+"%"
                 font.pointSize: 7
                 font.bold: true
             }
@@ -73,7 +73,7 @@ Item {
             Label {
                 id: avg15
                 color: "#92b5fa"
-                text:"avg15: "+ JS.roundPlus( host.system_cpu_load_percpu_avg15.lastvalue,2)+"%"
+                text:"avg15: "+ JS.roundPlus(host["system.cpu.load[percpu,avg15]"].lastvalue,2)+"%"
                 font.pointSize: 7
                 font.bold: true
             }

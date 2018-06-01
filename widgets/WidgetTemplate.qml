@@ -19,7 +19,6 @@ Item {
     width: 100
     height: 100
 
-
     RectangularGlow {
         id: effect
         anchors.fill: bg
@@ -45,7 +44,7 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            console.log(JSON.stringify(disks));
+            console.log(JSON.stringify(hostConfigs));
         }
         onEntered: {
             bg.color = parent.bgHoverColor;

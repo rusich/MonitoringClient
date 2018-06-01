@@ -21,7 +21,6 @@ public slots:
     void setStatus(bool newStatus);
     void parseMessage(QJsonObject* jsonReply);
     void gotError(QAbstractSocket::SocketError err);
-    void sendClicked(QString msg);
     void connectClicked();
     void disconnectClicked();
     void getHostsData();
@@ -36,8 +35,8 @@ private:
     MonitoringClient *client;
     QJsonObject data;
     QQmlContext* context;
-    QJsonObject* hostsConfigs;
-    QQmlPropertyMap* hostsConfigsMapping;
+    QJsonObject* hostConfigs;
+    QQmlPropertyMap* hostConfigsMapping;
     QJsonObject* hosts;
     QQmlPropertyMap* hostsMapping;
     QTimer* dataGetTimer;

@@ -5,22 +5,18 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import "../functions.js" as JS
 
-import jbQuick.Charts 1.0
 Item {
     id: item1
     width: 200
     height: width*1.1
-    property bool isWindows: host.system_cpu_util_all_system_avg1? true: false
-    property int cpuloadp: isWindows?
-                               Math.round(host.system_cpu_util_all_system_avg1.lastvalue):
-                               Math.round(100-host.system_cpu_util_idle.lastvalue)
-    property variant disks: []
+
+    property variant disks: hostConfigs[host["host"]].fs
     WidgetTemplate {
         id: widgetTemplate
         anchors.rightMargin: 0
         anchors.bottomMargin:0
         anchors.fill: parent
-        lastUpdatedInfo: host["vfs_fs_size_"+disks[0]+ "_used"].lastclock
+        lastUpdatedInfo: host["vfs.fs.size["+disks[0]+ ",used]"].lastclock
 
         caption: "ФАЙЛОВЫЕ СИСТЕМЫ"
 
@@ -38,10 +34,10 @@ Item {
                 HorizontalProgressBar {
 
                     id: curDisk
-                    property real fsUsed:  JS.roundPlus(host["vfs_fs_size_"+disks[index]+
-                                               "_used"].lastvalue/1024/1024/1024,1)
-                    property real fsTotal: JS.roundPlus(host["vfs_fs_size_"+disks[index]+
-                                               "_total"].lastvalue/1024/1024/1024,1)
+                    property real fsUsed:  JS.roundPlus(host["vfs.fs.size["+disks[index]+
+                                               ",used]"].lastvalue/1024/1024/1024,1)
+                    property real fsTotal: JS.roundPlus(host["vfs.fs.size["+disks[index]+
+                                               ",total]"].lastvalue/1024/1024/1024,1)
                     property real fsUsedP: JS.roundPlus(fsUsed/fsTotal*100,1)
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -67,4 +63,5 @@ Item {
             }
         }
     }
+    Component.onCompleted: console.log( JSON.stringify(hostConfigs));
 }

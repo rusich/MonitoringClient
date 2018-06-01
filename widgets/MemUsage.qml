@@ -6,41 +6,41 @@ import QtGraphicalEffects 1.0
 import "../functions.js" as JS
 
 Item {
+
     id: item1
     width: 200
     height: 100
-    property bool isWindows: host.vm_memory_size_free? true: false
+    property bool isWindows: host["vm.memory.size[free]"]? true: false
     //Оперативная память
     property double totalRam: JS.roundPlus(
-                                  host.vm_memory_size_total.lastvalue
+                                  host["vm.memory.size[total]"].lastvalue
                                   /1024/1024/1024,1)
     property double availRam: JS.roundPlus(
                                   isWindows?
-                                  host.vm_memory_size_free.lastvalue/1024/1024/1024:
-                                  host.vm_memory_size_available.lastvalue/1024/1024/1024
+                                  host["vm.memory.size[free]"].lastvalue/1024/1024/1024:
+                                  host["vm.memory.size[available]"].lastvalue/1024/1024/1024
                                       ,1)
     property double usedRam: JS.roundPlus(totalRam-availRam,1)
     property double ramUsageP: Math.round(usedRam/totalRam*100)
 
     //Своп
     property double totalSwap: JS.roundPlus(
-                                  host.system_swap_size_total.lastvalue
+                                  host["system.swap.size[,total]"].lastvalue
                                   /1024/1024/1024,1)
     property double availSwap: JS.roundPlus(
-                                  host.system_swap_size_free.lastvalue
+                                  host["system.swap.size[,free]"].lastvalue
                                   /1024/1024/1024,1)
     property double usedSwap: JS.roundPlus(totalSwap-availSwap,1)
     property double swapUsageP: Math.round(usedSwap/totalSwap*100)
 
-
     WidgetTemplate {
         id: widgetTemplate
         anchors.fill: parent
-        lastUpdatedInfo: isWindows?host.vm_memory_size_free.lastclock:
-                                   host.vm_memory_size_available.lastclock
+        lastUpdatedInfo: isWindows?host["vm.memory.size[free]"].lastclock:
+                                   host["vm.memory.size[available]"].lastclock
 
         caption: "ИСПОЛЬЗОВАНИЕ ПАМЯТИ"
-
+        implicitWidth: 50
         HorizontalProgressBar {
             id: ram
             y: 54

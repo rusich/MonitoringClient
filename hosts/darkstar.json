@@ -1,4 +1,5 @@
 {
     "host": "darkstar",
-    "items": []
+    "items": [],
+    "fs": ["/"]
 }

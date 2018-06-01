@@ -45,7 +45,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: Server { host: hosts.macbook }
+        initialItem: Server { host: hosts.server }
         anchors.fill: parent
     }
 

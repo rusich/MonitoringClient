@@ -2,7 +2,6 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import "qrc:/widgets"
 import "qrc:/pages"
-import jbQuick.Charts 1.0
 
 Page {
     property variant host
@@ -12,31 +11,32 @@ Page {
 
     Label {
         text: host.ip
+        anchors.verticalCenterOffset: -205
+        anchors.horizontalCenterOffset: 5
         anchors.centerIn: parent
     }
 
 
     MemUsage {
-        x: 159
-        y: 62
-        width: 177
-        height: 105
+        x: 274
+        y: 188
+        width: 196
+        height: 91
     }
 
     CpuUsage {
-        x: 22
-        y: 62
-        width: 131
-        height: 105
+        x: 42
+        y: 61
+        width: 220
+        height: 137
     }
 
     FsUsage {
-        x: 342
-        y: 62
-        width: 174
-        height: 105
+        x: 274
+        y: 61
+        width: 196
+        height: 101
 
-        disks: ["C:", "D:"]
     }
 
 

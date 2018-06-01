@@ -1,4 +1,5 @@
 {
     "host": "macbook",
-    "items": []
+    "items": [],
+    "fs": ["C:", "D:", "C:", "D:"]
 }
