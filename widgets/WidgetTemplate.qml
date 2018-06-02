@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.0
 import "../functions.js" as JS
 
 Item {
-    property color bgColor: "#25252E"
+    property color bgColor: "#2B2B2B"
     property color bgHoverColor: "#24302E"
     property color borderColor: "white"
     property int borderWidth: 0
@@ -22,7 +22,7 @@ Item {
     RectangularGlow {
         id: effect
         anchors.fill: bg
-        glowRadius: 8
+        glowRadius: 4
         spread: 0.2
         color: "black"
         opacity: 0.5

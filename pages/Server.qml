@@ -10,34 +10,42 @@ Page {
     title: host.name
 
     Label {
+        width: 62
+        height: 22
         text: host.ip
-        anchors.verticalCenterOffset: -205
-        anchors.horizontalCenterOffset: 5
+        anchors.verticalCenterOffset: 198
+        anchors.horizontalCenterOffset: 0
         anchors.centerIn: parent
     }
 
 
     MemUsage {
-        x: 274
-        y: 188
+        x: 139
+        y: 7
         width: 196
-        height: 91
+        height: 101
     }
 
     CpuUsage {
-        x: 42
-        y: 61
-        width: 220
-        height: 137
+        x: 10
+        y: 7
+        width: 123
+        height: 101
     }
 
     FsUsage {
-        x: 274
-        y: 61
+        x: 341
+        y: 7
         width: 196
         height: 101
 
     }
 
+    Graph {
+        x: 10
+        y: 114
+        width: 527
+        height: 290
+    }
 
 }

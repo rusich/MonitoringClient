@@ -24,10 +24,10 @@ MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(pare
     context->setContextProperty("hostConfigs", hostConfigsMapping);
     context->setContextProperty("backend",this);
 
-    dataGetTimer = new QTimer(this);
-    dataGetTimer->start(1000);
-    connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getHostsData()));
     loadHosts();
+
+    dataGetTimer = new QTimer(this);
+    connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getHostsData()));
 }
 
 bool MonitoringData::getStatus()
@@ -39,23 +39,38 @@ void MonitoringData::setStatus(bool newStatus)
 {
     //qDebug() << "new status is:" << newStatus;
     if (newStatus)
-    { emit statusChanged("CONNECTED"); }
+    {
+        emit statusChanged("CONNECTED");
+        getHostsData();
+        dataGetTimer->start(10000);
+    }
     else
-    { emit statusChanged("DISCONNECTED"); }
+    {
+        emit statusChanged("DISCONNECTED");
+        dataGetTimer->stop();
+    }
 }
 
 void MonitoringData::parseMessage(QJsonObject* jsonReply)
 {
     QString replyType = jsonReply->value("replyType").toString();
     QString uuid = jsonReply->value("uuid").toString();
-    QJsonObject data = jsonReply->value("data").toObject();
+    QJsonObject replyData = jsonReply->value("data").toObject();
 
     if(replyType == "hostData")
     {
-        hosts->insert(data["host"].toString(),data);
+        hosts->insert(replyData["host"].toString(),replyData);
 
-        hostsMapping->insert(data["host"].toString(),
-                QVariant::fromValue(hosts->value(data["host"].toString())));
+        hostsMapping->insert(replyData["host"].toString(),
+                QVariant::fromValue(hosts->value(replyData["host"].toString())));
+    }
+    else if (replyType == "graphData")
+    {
+        if(replyData["graphid"].toString().trimmed()!="")
+        {
+//            QVariant* graph = new QVariant(replyData);
+            emit graphUpdated(QVariant::fromValue(replyData));
+        }
     }
     else
     {
@@ -104,8 +119,6 @@ void MonitoringData::getHostsData()
     //Если нет подключения к серверу то запрос не отправляем
     if(!getStatus()) return;
 
-//    this->dataGetTimer->stop();
-
     foreach (QString host, hostConfigs->keys()) {
         QJsonObject* request = new QJsonObject();
         request->insert("requestType","getHost");
@@ -113,6 +126,22 @@ void MonitoringData::getHostsData()
         request->insert("request", hostConfigs->value(host));
         client->sendMessage(request);
     }
+}
+
+void MonitoringData::getGraph(int graphid, int period, int width, int height)
+{
+    //Если нет подключения к серверу то запрос не отправляем
+    if(!getStatus()) return;
+    QJsonObject* request = new QJsonObject();
+    request->insert("requestType","getGraph");
+    request->insert("uuid",QUuid::createUuid().toString());
+    QJsonObject params;
+    params["graphid"] = graphid;
+    params["period"] = period;
+    params["width"] = width;
+    params["height"] = height;
+    request->insert("request",params);
+    client->sendMessage(request);
 }
 
 void MonitoringData::loadHosts()

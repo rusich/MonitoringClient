@@ -45,7 +45,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: Server { host: hosts.server }
+        initialItem: Server { host: hosts.darkstar }
         anchors.fill: parent
     }
 
