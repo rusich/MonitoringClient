@@ -8,24 +8,24 @@ import "../functions.js" as JS
 Item {
 
     id: item1
-    width: 200
-    height: 100
-    property alias caption: widgetTemplate.caption
+    width: 500
+    height: 200
     property alias graphid: graphimg.graphid
-
 
     WidgetTemplate {
         id: widgetTemplate
+        anchors.rightMargin: 0
+        anchors.bottomMargin:0
         anchors.fill: parent
-
+        caption: "График"
         Image {
             id: graphimg
             property string graphid: "1160"
             anchors.fill: parent
-            anchors.topMargin: 1
+            anchors.topMargin: 0
             anchors.bottomMargin: 15
-            anchors.leftMargin: 9
-            anchors.rightMargin: 9
+            anchors.leftMargin: 0
+            anchors.rightMargin: 5
             width: parent.width - anchors.leftMargin - anchors.rightMargin
             height: parent.height - anchors.topMargin - anchors.bottomMargin
 //            fillMode: Image.PreserveAspectCrop
@@ -39,7 +39,7 @@ Item {
                     backend.getGraph(graphid,
                                      3600,
                                      graphimg.width,
-                                     graphimg.height-(graphimg.height*0.2));
+                                     graphimg.height);
                 }
             }
         }
@@ -52,8 +52,8 @@ Item {
            console.log(graph.name);
            if(graph.graphid === graphid)
            {
-               caption = graph.name;
-                graphimg.source = "data:image/png;base64," + graph.data;
+               widgetTemplate.caption = graph.name;
+               graphimg.source = "data:image/png;base64," + graph.data;
                widgetTemplate.lastUpdatedInfo = graph.clock;
            }
         }

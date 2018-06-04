@@ -5,47 +5,49 @@ import "qrc:/pages"
 
 Page {
     property variant host
+    width: 1000
+    height: 800
     anchors.fill: parent
 
     title: host.name
 
-    Label {
-        width: 62
-        height: 22
-        text: host.ip
-        anchors.verticalCenterOffset: 198
-        anchors.horizontalCenterOffset: 0
-        anchors.centerIn: parent
-    }
-
 
     MemUsage {
-        x: 139
-        y: 7
-        width: 196
-        height: 101
+        x: 391
+        y: 17
+        width: 200
+        height: 100
     }
 
     CpuUsage {
-        x: 10
-        y: 7
-        width: 123
-        height: 101
+        x: 19
+        y: 17
+        width: 137
+        height: 100
     }
 
     FsUsage {
-        x: 341
-        y: 7
-        width: 196
-        height: 101
+        x: 173
+        y: 17
+        width: 200
+        height: 100
 
     }
 
     Graph {
-        x: 10
-        y: 114
-        width: 527
-        height: 290
+        x: 173
+        y: 133
+        width: 418
+        height: 240
     }
+
+    Problems {
+        x: 19
+        y: 133
+        width: 137
+        height: 240
+
+    }
+
 
 }

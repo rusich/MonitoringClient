@@ -5,16 +5,15 @@ import QtGraphicalEffects 1.0
 import "../functions.js" as JS
 
 Item {
-    property color bgColor: "#2B2B2B"
-    property color bgHoverColor: "#24302E"
+    property color bgColor: "#25252E"
     property color borderColor: "white"
     property int borderWidth: 0
-    property color borderHoverColor: "purple"
-    property int borderHoverWidth: 0
-    property string caption: "Widget"
+    property string caption
     property bool showHeaderLine: true
     property color headerLineColor: "grey"
     property int lastUpdatedInfo
+    property variant  hilightTriggers: []
+    property bool hilightWidget: false
 
     width: 100
     height: 100
@@ -22,20 +21,21 @@ Item {
     RectangularGlow {
         id: effect
         anchors.fill: bg
-        glowRadius: 4
-        spread: 0.2
-        color: "black"
-        opacity: 0.5
+        glowRadius: 10
+        spread: 0.1
+        color: hilightWidget?"#ff0000":"black"
+        opacity: hilightWidget?1:0.5
         cornerRadius: bg.radius + glowRadius
     }
+
 
     Rectangle  {
         id: bg
         anchors.fill: parent
         color: parent.bgColor
         radius: 2
-        border.color: parent.borderColor
-        border.width: parent.borderWidth
+        border.color: hilightWidget?"#ff0000":parent.borderColor
+        border.width: hilightWidget?"1": parent.borderWidth
     }
 
     MouseArea {
@@ -44,17 +44,11 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            console.log(JSON.stringify(hostConfigs));
+            console.log(JSON.stringify(host.triggers));
         }
         onEntered: {
-            bg.color = parent.bgHoverColor;
-            bg.border.color = parent.borderHoverColor;
-            bg.border.width = parent.borderHoverWidth;
         }
         onExited:  {
-            bg.color = parent.bgColor;
-            bg.border.color = parent.borderColor;
-            bg.border.width = parent.borderWidth;
         }
 
     }
@@ -69,14 +63,14 @@ Item {
     }
 
     Rectangle {
-       id: headerLine
-       visible: parent.showHeaderLine
-       width: parent.width*0.93
-       height: 1
-       anchors.top: captionLabel.bottom
-       anchors.topMargin: 5
-       color: headerLineColor
-       anchors.horizontalCenter: parent.horizontalCenter
+        id: headerLine
+        visible: parent.showHeaderLine
+        width: parent.width*0.93
+        height: 1
+        anchors.top: captionLabel.bottom
+        anchors.topMargin: 5
+        color: headerLineColor
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 
     Label {
@@ -100,5 +94,32 @@ Item {
         font.pointSize: 7
         color: "grey"
         visible: lastUpdatedInfo? true : false
+    }
+
+    function hlWdt(hostname) {
+        if(hostname===host.host){
+            if(host.triggersCount>0)
+            {
+                for(var i=0; i < host.triggersCount; i++){
+                    var triggerid = host.triggers[i].triggerid;
+                    if(hilightTriggers.length>0) {
+                        for(var j=0; j < hilightTriggers.length; j++) {
+                            if(hilightTriggers[j] === triggerid) {
+                                hilightWidget = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                hilightWidget = false;
+            }
+        }
+    }
+
+    Connections {
+        target: backend?backend:null
+        onHostUpdated: hlWdt(hostname)
     }
 }

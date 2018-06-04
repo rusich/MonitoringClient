@@ -30,6 +30,7 @@ signals:
     void networkError(QString err);
     void messageReceived(QJsonObject* jsonReply);
     void graphUpdated(const QVariant graph);
+    void hostUpdated(const QString hostname);
 
 
 private:

@@ -7,11 +7,15 @@ import "../functions.js" as JS
 Item {
     id: item1
     width: 200
-    height: width*1.1
+    height: 200
     property bool isWindows: host["system.cpu.util[all,system,avg1]"]? true: false
     property int cpuloadp: isWindows?
                                Math.round(host["system.cpu.util[all,system,avg1]"].lastvalue):
                                Math.round(100-host["system.cpu.util[,idle]"].lastvalue)
+
+    property alias hilightTriggers: widgetTemplate.hilightTriggers
+    hilightTriggers: []
+
     WidgetTemplate {
         id: widgetTemplate
         anchors.rightMargin: 0
@@ -20,13 +24,13 @@ Item {
         lastUpdatedInfo: isWindows?host["system.cpu.util[all,system,avg1]"].lastclock:
                              host["system.cpu.util[,idle]"].lastclock
 
-        caption: "ЗАГРУЗКА ЦП"
+        caption: "Загрузка ЦП"
         RoundPorgressBar {
             id: rpg
+            size: parent.height
             anchors.topMargin: 32
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-            size: parent.width * 0.8
             colorCircle: cpuusLabel.color
             inPercent: cpuloadp
             lineWidth: 10
@@ -79,9 +83,5 @@ Item {
             }
         }
 
-
-
     }
-
-
 }

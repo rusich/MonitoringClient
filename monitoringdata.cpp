@@ -63,6 +63,7 @@ void MonitoringData::parseMessage(QJsonObject* jsonReply)
 
         hostsMapping->insert(replyData["host"].toString(),
                 QVariant::fromValue(hosts->value(replyData["host"].toString())));
+        emit hostUpdated(replyData["host"].toString());
     }
     else if (replyType == "graphData")
     {

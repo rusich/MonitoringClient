@@ -8,7 +8,10 @@ import "../functions.js" as JS
 Item {
     id: item1
     width: 200
-    height: width*1.1
+    height: 200
+
+    property alias hilightTriggers: widgetTemplate.hilightTriggers
+    hilightTriggers: ["14157","14159"]
 
     property variant disks: hostConfigs[host["host"]].fs
     WidgetTemplate {
@@ -18,8 +21,8 @@ Item {
         anchors.fill: parent
         lastUpdatedInfo: host["vfs.fs.size["+disks[0]+ ",used]"].lastclock
 
-        caption: "ФАЙЛОВЫЕ СИСТЕМЫ"
 
+        caption: "Файловые системы"
 
         Column {
             anchors.fill: parent
@@ -34,10 +37,11 @@ Item {
                 HorizontalProgressBar {
 
                     id: curDisk
+                    height: 20
                     property real fsUsed:  JS.roundPlus(host["vfs.fs.size["+disks[index]+
-                                               ",used]"].lastvalue/1024/1024/1024,1)
+                                                             ",used]"].lastvalue/1024/1024/1024,1)
                     property real fsTotal: JS.roundPlus(host["vfs.fs.size["+disks[index]+
-                                               ",total]"].lastvalue/1024/1024/1024,1)
+                                                             ",total]"].lastvalue/1024/1024/1024,1)
                     property real fsUsedP: JS.roundPlus(fsUsed/fsTotal*100,1)
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -63,5 +67,4 @@ Item {
             }
         }
     }
-    Component.onCompleted: console.log( JSON.stringify(hostConfigs));
 }
