@@ -11,6 +11,7 @@ Item {
     width: 500
     height: 200
     property alias graphid: graphimg.graphid
+    property int period
 
     WidgetTemplate {
         id: widgetTemplate
@@ -20,11 +21,11 @@ Item {
         caption: "График"
         Image {
             id: graphimg
-            property string graphid: "1160"
+            property string graphid
             anchors.fill: parent
             anchors.topMargin: 0
             anchors.bottomMargin: 15
-            anchors.leftMargin: 0
+            anchors.leftMargin: 5
             anchors.rightMargin: 5
             width: parent.width - anchors.leftMargin - anchors.rightMargin
             height: parent.height - anchors.topMargin - anchors.bottomMargin
@@ -35,9 +36,9 @@ Item {
                 anchors.fill: parent
                 onClicked:
                 {
-                    console.log(graphimg.width);
+                    console.log(graphid);
                     backend.getGraph(graphid,
-                                     3600,
+                                     period,
                                      graphimg.width,
                                      graphimg.height);
                 }
@@ -52,7 +53,7 @@ Item {
            console.log(graph.name);
            if(graph.graphid === graphid)
            {
-               widgetTemplate.caption = graph.name;
+//               widgetTemplate.caption = graph.name;
                graphimg.source = "data:image/png;base64," + graph.data;
                widgetTemplate.lastUpdatedInfo = graph.clock;
            }

@@ -9,24 +9,26 @@ import "qrc:/pages"
 ApplicationWindow {
     id: window
     visible: true
-    width: 1200
-    height: 800
+    width: 1010
+    height: 740
     title: qsTr("Мониторинг оборудования")
 
     //Константы
-    property color normalMetricColor: "#59FA21"
-    property color warningMetricColor: "yellow"
-    property color criticalMetricColor: "#FF0300"
-    property int normalMetricTop: 50
-    property int warningMetricTop: 79
-
+    readonly property color normalMetricColor: "#59FA21"
+    readonly property color warningMetricColor: "yellow"
+    readonly property color criticalMetricColor: "#FF0300"
+    readonly property int normalMetricTop: 50
+    readonly property int warningMetricTop: 79
+    readonly property color toolBarColor: "black"
+    readonly property color widgetBgColor: "#323232"
+//⚙
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
-        Material.primary: "#1B2033"
+        Material.primary: toolBarColor
         ToolButton {
             id: toolButton
-            text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            text: stackView.depth > 1 ? "◄" : "⌂"
+            font.pixelSize: 20
             onClicked: {
                 if (stackView.depth > 1) {
                     stackView.pop()
@@ -45,13 +47,13 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: Server { host: hosts.macbook }
+        initialItem: Server { host: hosts["darkstar"] }
         anchors.fill: parent
     }
 
     footer: ToolBar {
         contentHeight: toolButton2.implicitHeight
-        Material.primary: "#1B2033"
+        Material.primary: "black"
 
         RowLayout {
             Layout.leftMargin: 10
@@ -83,14 +85,7 @@ ApplicationWindow {
         }
     }
 
-    Label {
-        id: label
-        x: 162
-        y: 631
-        text: "⬉"
-        font.family: "Verdana"
-        fontSizeMode: Text.FixedSize
-    }
+
 
     MessageDialog {
         id: errorDialog

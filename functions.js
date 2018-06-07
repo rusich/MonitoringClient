@@ -1,8 +1,8 @@
 //var
 function roundPlus(x, n) { //x - число, n - количество знаков
-  if(isNaN(x) || isNaN(n)) return false;
-  var m = Math.pow(10,n);
-  return Math.round(x*m)/m;
+    if(isNaN(x) || isNaN(n)) return false;
+    var m = Math.pow(10,n);
+    return Math.round(x*m)/m;
 }
 
 function tsToDT(timestamp) {
@@ -18,4 +18,23 @@ function tsToDT(timestamp) {
             year +' ' + hours + ':' + minutes.substr(-2) + ':'
             + seconds.substr(-2);
     return formattedTime;
+}
+
+
+function uptime(timestamp) {
+    console.log(timestamp);
+    var seconds = "0" + Math.floor(timestamp%60);
+    console.log(seconds);
+    timestamp/=60;
+    var minutes = "0" + Math.floor(timestamp%60);
+    console.log(minutes);
+    timestamp/=60;
+    var hours = "" + Math.floor(timestamp%24);
+    console.log(hours);
+    timestamp/=24;
+    var days = ""+Math.floor(timestamp)
+    console.log(days);
+    var formattedUptime = days.substr(-2) + " д. " + hours + " ч. " +
+            minutes.substr(-2) + " м. ";
+    return formattedUptime;
 }

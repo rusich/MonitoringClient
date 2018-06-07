@@ -1,10 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>tmp1.qml</file>
-        <file>tmp2.qml</file>
-        <file>tmp3.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>tmp4.qml</file>
         <file>widgets/CpuUsage.qml</file>
         <file>widgets/RoundPorgressBar.qml</file>
         <file>widgets/WidgetTemplate.qml</file>
@@ -16,6 +12,9 @@
         <file>widgets/FsUsage.qml</file>
         <file>widgets/Graph.qml</file>
         <file>widgets/Problems.qml</file>
+        <file>widgets/CommonInfo.qml</file>
+        <file>widgets/UpDown.qml</file>
+        <file>images/server_icon.png</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>

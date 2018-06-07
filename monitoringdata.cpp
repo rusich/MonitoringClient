@@ -42,7 +42,7 @@ void MonitoringData::setStatus(bool newStatus)
     {
         emit statusChanged("CONNECTED");
         getHostsData();
-        dataGetTimer->start(10000);
+        dataGetTimer->start(5000);
     }
     else
     {

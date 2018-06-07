@@ -11,7 +11,7 @@ Item {
     height: 200
 
     property alias hilightTriggers: widgetTemplate.hilightTriggers
-    hilightTriggers: ["14157","14159"]
+    hilightTriggers: hostConfigs[host.host].hilightTriggers.fsTriggers
 
     property variant disks: hostConfigs[host["host"]].fs
     WidgetTemplate {

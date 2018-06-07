@@ -14,7 +14,8 @@ Item {
                                Math.round(100-host["system.cpu.util[,idle]"].lastvalue)
 
     property alias hilightTriggers: widgetTemplate.hilightTriggers
-    hilightTriggers: []
+    hilightTriggers: hostConfigs[host.host].hilightTriggers.cpuTriggers
+
 
     WidgetTemplate {
         id: widgetTemplate

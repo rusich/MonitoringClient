@@ -1,5 +1,8 @@
 {
     "host": "macbook",
     "items": [],
-    "fs": ["C:", "D:" ]
+    "fs": ["C:","D:"],
+    "hilightTriggers": {
+        "commonTriggers": ["14163","14162","14164","14172"]
+    }
 }

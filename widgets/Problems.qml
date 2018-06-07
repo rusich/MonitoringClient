@@ -42,7 +42,8 @@ Item {
                 id: problem
                 color: "white"
                 font.pixelSize: 11
-                text: host?host.triggersCount>0?"<b>"+datetime+"</b>:" + " " + description:
+                text: host?host.triggersCount>0?"<b>"+datetime+"</b>:" + " " + description
+                                               +" ("+triggerid+")":
                                             "Ура, проблем нет!":"Ура, проблем нет!"
                 wrapMode: Text.Wrap
                 Layout.fillWidth: true
@@ -61,12 +62,14 @@ Item {
                     problemModel.append({"datetime":
                                         JS.tsToDT(host.triggers[i].lastchange),
                                         "description":
-                                        host.triggers[i].description});
+                                        host.triggers[i].description,
+                                        "triggerid":
+                                        host.triggers[i].triggerid});
                 }
 
             }
             else {
-//                widgetTemplate.bgColor = "";
+                widgetTemplate.bgColor = widgetBgColor;
             }
         }
     }

@@ -37,6 +37,7 @@ HEADERS += \
     monitoringclient.h
 
 DISTFILES += \
-    hosts/darkstar.json \
     hosts/server.json \
-    hosts/macbook.json
+    hosts/mikrotik.json \
+    hosts/macbook.json \
+    hosts/darkstar.json

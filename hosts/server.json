@@ -1,5 +1,8 @@
 {
     "host": "server",
     "items": [],
-    "fs": ["/","/media"]
+    "fs": ["/","/media"],
+    "hilightTriggers": {
+        "fsTriggers": ["14159","14158"]
+    }
 }

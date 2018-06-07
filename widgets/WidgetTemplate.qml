@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.0
 import "../functions.js" as JS
 
 Item {
-    property color bgColor: "#25252E"
+    property color bgColor: widgetBgColor
     property color borderColor: "white"
     property int borderWidth: 0
     property string caption
@@ -44,7 +44,7 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            console.log(JSON.stringify(host.triggers));
+            console.log(JSON.stringify(host));
         }
         onEntered: {
         }
@@ -109,11 +109,13 @@ Item {
                                 return;
                             }
                         }
+
+                    hilightWidget = false;
                     }
                 }
             }
             else {
-                hilightWidget = false;
+                    hilightWidget = false;
             }
         }
     }

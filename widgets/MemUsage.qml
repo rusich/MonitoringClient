@@ -35,7 +35,7 @@ Item {
     property double swapUsageP: Math.round(usedSwap/totalSwap*100)
 
     property alias hilightTriggers: widgetTemplate.hilightTriggers
-    hilightTriggers: []
+    hilightTriggers: hostConfigs[host.host].hilightTriggers.memTriggers
 
     WidgetTemplate {
         id: widgetTemplate
