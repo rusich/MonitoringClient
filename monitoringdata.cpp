@@ -19,15 +19,19 @@ MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(pare
     hostsMapping = new QQmlPropertyMap(this);
     hostConfigs= new QJsonObject();
     hostConfigsMapping = new QQmlPropertyMap(this);
+    groups = new QJsonObject();
+    groupsMapping = new QQmlPropertyMap(this);
 
     context->setContextProperty("hosts", hostsMapping);
     context->setContextProperty("hostConfigs", hostConfigsMapping);
+    context->setContextProperty("groups", groupsMapping);
     context->setContextProperty("backend",this);
 
     loadHosts();
 
     dataGetTimer = new QTimer(this);
     connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getHostsData()));
+    connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getGroupsData()));
 }
 
 bool MonitoringData::getStatus()
@@ -37,11 +41,11 @@ bool MonitoringData::getStatus()
 
 void MonitoringData::setStatus(bool newStatus)
 {
-    //qDebug() << "new status is:" << newStatus;
     if (newStatus)
     {
         emit statusChanged("CONNECTED");
         getHostsData();
+        getGroupsData();
         dataGetTimer->start(5000);
     }
     else
@@ -65,6 +69,18 @@ void MonitoringData::parseMessage(QJsonObject* jsonReply)
                 QVariant::fromValue(hosts->value(replyData["host"].toString())));
         emit hostUpdated(replyData["host"].toString());
     }
+    else if(replyType == "groupsData")
+    {
+        for(int i=0; i < replyData.count();i++)
+        {
+            QString groupName = replyData.keys()[i];
+            groups->insert(groupName,
+                           replyData[replyData.keys()[i]]);
+            groupsMapping->insert(groupName,
+                QVariant::fromValue(groups->value(groupName)));
+        }
+
+    }
     else if (replyType == "graphData")
     {
         if(replyData["graphid"].toString().trimmed()!="")
@@ -73,36 +89,39 @@ void MonitoringData::parseMessage(QJsonObject* jsonReply)
             emit graphUpdated(QVariant::fromValue(replyData));
         }
     }
+    else if (replyType == "error")
+    {
+        emit error("Сервер сообщил об ошибке: " + replyData["errorMsg"].toString());
+    }
     else
     {
-        qDebug()<<"Unknown reply:"<<replyType;
+        emit error("Сервер отправил неизвестный ответ: "+replyType);
     }
 
 }
 
 void MonitoringData::gotError(QAbstractSocket::SocketError err)
 {
-    //qDebug() << "got error";
     QString strError = "unknown";
     switch (err)
     {
     case 0:
-        strError = "Connection was refused";
+        strError = "Невозможно подключиться к серверу";
         break;
     case 1:
-        strError = "Remote host closed the connection";
+        strError = "Сервер закрыл соединение";
         break;
     case 2:
-        strError = "Host address was not found";
+        strError = "Неверно указан адрес сервера";
         break;
     case 5:
-        strError = "Connection timed out";
+        strError = "Время ожидания соединения истекло";
         break;
     default:
-        strError = "Unknown error";
+        strError = "Неизвестная ошибка";
     }
 
-    emit networkError(strError);
+    emit error(strError);
 }
 
 void MonitoringData::connectClicked()
@@ -127,6 +146,16 @@ void MonitoringData::getHostsData()
         request->insert("request", hostConfigs->value(host));
         client->sendMessage(request);
     }
+}
+
+void MonitoringData::getGroupsData()
+{
+    //Если нет подключения к серверу то запрос не отправляем
+    if(!getStatus()) return;
+    QJsonObject* request = new QJsonObject();
+    request->insert("requestType","getGroups");
+    request->insert("uuid",QUuid::createUuid().toString());
+    client->sendMessage(request);
 }
 
 void MonitoringData::getGraph(int graphid, int period, int width, int height)
@@ -166,7 +195,7 @@ void MonitoringData::loadHosts()
             QJsonObject jsonObj(doc.object());
             if(jsonObj.empty())
             {
-                qWarning()<<"ERROR:"<<fi.absoluteFilePath()<<"is not valid JSON file";
+                emit error("Файл настроек хоста "+fi.absoluteFilePath()+" является некорректным");
                 continue;
             }
 

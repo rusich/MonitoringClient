@@ -59,4 +59,7 @@ Item {
            }
         }
     }
+
+    Component.onCompleted: backend.getGraph(graphid, period,
+                                            graphimg.width, graphimg.height);
 }

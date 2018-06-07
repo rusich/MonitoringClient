@@ -38,6 +38,5 @@ HEADERS += \
 
 DISTFILES += \
     hosts/server.json \
-    hosts/mikrotik.json \
     hosts/macbook.json \
     hosts/darkstar.json

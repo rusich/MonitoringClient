@@ -15,6 +15,14 @@
         <file>widgets/CommonInfo.qml</file>
         <file>widgets/UpDown.qml</file>
         <file>images/server_icon.png</file>
+        <file>pages/Groups.qml</file>
+        <file>widgets/HostsGroup.qml</file>
+        <file>images/nvr.png</file>
+        <file>images/servers.png</file>
+        <file>images/df200.png</file>
+        <file>images/topaz.png</file>
+        <file>widgets/HostShortcut.qml</file>
+        <file>pages/Servers.qml</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>

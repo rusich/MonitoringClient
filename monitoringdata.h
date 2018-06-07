@@ -23,11 +23,12 @@ public slots:
     void connectClicked();
     void disconnectClicked();
     void getHostsData();
+    void getGroupsData();
     Q_INVOKABLE void getGraph(int graphid, int period, int width, int height);
 
 signals:
     void statusChanged(QString newStatus);
-    void networkError(QString err);
+    void error(QString err);
     void messageReceived(QJsonObject* jsonReply);
     void graphUpdated(const QVariant graph);
     void hostUpdated(const QString hostname);
@@ -40,6 +41,8 @@ private:
     QQmlPropertyMap* hostConfigsMapping;
     QJsonObject* hosts;
     QQmlPropertyMap* hostsMapping;
+    QJsonObject* groups;
+    QQmlPropertyMap* groupsMapping;
     QTimer* dataGetTimer;
     void loadHosts();
 };

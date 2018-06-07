@@ -11,7 +11,12 @@ ApplicationWindow {
     visible: true
     width: 1010
     height: 740
-    title: qsTr("Мониторинг оборудования")
+    maximumHeight: height
+    maximumWidth: width
+    minimumHeight: height
+    minimumWidth: width
+
+    title: qsTr("Мониторинг оборудования объектов")
 
     //Константы
     readonly property color normalMetricColor: "#59FA21"
@@ -21,7 +26,7 @@ ApplicationWindow {
     readonly property int warningMetricTop: 79
     readonly property color toolBarColor: "black"
     readonly property color widgetBgColor: "#323232"
-//⚙
+    //⚙
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
         Material.primary: toolBarColor
@@ -32,8 +37,6 @@ ApplicationWindow {
             onClicked: {
                 if (stackView.depth > 1) {
                     stackView.pop()
-                } else {
-                    drawer.open()
                 }
             }
         }
@@ -47,13 +50,15 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: Server { host: hosts["darkstar"] }
+        initialItem: Groups { }
         anchors.fill: parent
     }
+
 
     footer: ToolBar {
         contentHeight: toolButton2.implicitHeight
         Material.primary: "black"
+
 
         RowLayout {
             Layout.leftMargin: 10
@@ -87,18 +92,49 @@ ApplicationWindow {
 
 
 
-    MessageDialog {
+    Popup {
+        property alias errStr: errText.text
         id: errorDialog
-        title: "Network error"
-        onAccepted: {
+        x: parent.width/2-width/2
+        y: parent.height/2-height/2
+        width: 300
+        height: 180
+        modal: true
+        focus: true
+        Text {
+            id: capiton
+            font.bold: true
+            color: "red"
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "ОШИБКА"
         }
+
+        Text {
+            color: "white"
+            id: errText
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: capiton.bottom
+            anchors.topMargin: 10
+            wrapMode: Text.WordWrap
+        }
+
+        Button {
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            text: "ОК"
+            onClicked: errorDialog.close()
+        }
+
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     }
 
     Connections {
         target: backend?backend:null
-        onNetworkError:  {
+        onError:  {
             console.log(err);
-            errorDialog.text =  err;
+            errorDialog.errStr =  err;
             errorDialog.open();
         }
     }

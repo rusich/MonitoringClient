@@ -80,4 +80,5 @@ Page {
         period: hostConfigs[host.host].graphs[2].period
         graphid: hostConfigs[host.host].graphs[2].graphid
     }
+
 }

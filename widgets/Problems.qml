@@ -78,4 +78,6 @@ Item {
         target: backend?backend:null
         onHostUpdated: displayTriggers(hostname)
     }
+
+    Component.onCompleted: displayTriggers(host.host);
 }

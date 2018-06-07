@@ -10,8 +10,6 @@ Item {
     width: 200
     height: 200
 
-    property alias hilightTriggers: widgetTemplate.hilightTriggers
-    hilightTriggers: hostConfigs[host.host].hilightTriggers.fsTriggers
 
     property variant disks: hostConfigs[host["host"]].fs
     WidgetTemplate {
@@ -20,7 +18,7 @@ Item {
         anchors.bottomMargin:0
         anchors.fill: parent
         lastUpdatedInfo: host["vfs.fs.size["+disks[0]+ ",used]"].lastclock
-
+        hilightTriggers: hostConfigs[host.host].hilightTriggers.fsTriggers
 
         caption: "Файловые системы"
 

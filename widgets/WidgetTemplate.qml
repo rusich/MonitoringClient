@@ -38,20 +38,6 @@ Item {
         border.width: hilightWidget?"1": parent.borderWidth
     }
 
-    MouseArea {
-        id: ma
-        enabled: true
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
-            console.log(JSON.stringify(host));
-        }
-        onEntered: {
-        }
-        onExited:  {
-        }
-
-    }
 
     Label {
         id: captionLabel
@@ -97,11 +83,15 @@ Item {
     }
 
     function hlWdt(hostname) {
+        if(typeof host === "undefined")
+            return;
         if(hostname===host.host){
             if(host.triggersCount>0)
             {
                 for(var i=0; i < host.triggersCount; i++){
                     var triggerid = host.triggers[i].triggerid;
+                    if(typeof hilightTriggers === "undefined")
+                        continue;
                     if(hilightTriggers.length>0) {
                         for(var j=0; j < hilightTriggers.length; j++) {
                             if(hilightTriggers[j] === triggerid) {
@@ -124,4 +114,5 @@ Item {
         target: backend?backend:null
         onHostUpdated: hlWdt(hostname)
     }
+    Component.onCompleted: hlWdt(host.host)
 }

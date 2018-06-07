@@ -22,19 +22,22 @@ function tsToDT(timestamp) {
 
 
 function uptime(timestamp) {
-    console.log(timestamp);
     var seconds = "0" + Math.floor(timestamp%60);
-    console.log(seconds);
     timestamp/=60;
     var minutes = "0" + Math.floor(timestamp%60);
-    console.log(minutes);
     timestamp/=60;
     var hours = "" + Math.floor(timestamp%24);
-    console.log(hours);
     timestamp/=24;
     var days = ""+Math.floor(timestamp)
-    console.log(days);
     var formattedUptime = days.substr(-2) + " д. " + hours + " ч. " +
             minutes.substr(-2) + " м. ";
     return formattedUptime;
 }
+
+
+function nextPage(template, properties) {
+    var page =  Qt.createComponent(template);
+    if(page.status === Component.Ready)
+        stackView.push(page,properties);
+}
+
