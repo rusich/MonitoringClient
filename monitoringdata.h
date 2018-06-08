@@ -22,6 +22,7 @@ public slots:
     void gotError(QAbstractSocket::SocketError err);
     void connectClicked();
     void disconnectClicked();
+    Q_INVOKABLE void getHost(QString hostname);
     void getHostsData();
     void getGroupsData();
     Q_INVOKABLE void getGraph(int graphid, int period, int width, int height);

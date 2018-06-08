@@ -7,7 +7,8 @@
 MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(parent)
 {
     context = ctx;
-    client = new MonitoringClient("10.20.115.11", 9999);
+    client = new MonitoringClient("10.10.0.12", 9999);
+//    client = new MonitoringClient("localhost", 9999);
     //setStatus(client->get_status());
 
     connect(client, &MonitoringClient::messageReceived, this, &MonitoringData::parseMessage);
@@ -46,7 +47,7 @@ void MonitoringData::setStatus(bool newStatus)
         emit statusChanged("CONNECTED");
         getGroupsData();
         getHostsData();
-        dataGetTimer->start(5000);
+        dataGetTimer->start(30000);
     }
     else
     {
@@ -134,6 +135,21 @@ void MonitoringData::disconnectClicked()
     client->closeConnection();
 }
 
+void MonitoringData::getHost(QString hostname)
+{
+    //Если нет подключения к серверу то запрос не отправляем
+    if(!getStatus()) return;
+
+    QJsonObject* request = new QJsonObject();
+    request->insert("requestType","getHost");
+    request->insert("uuid",QUuid::createUuid().toString());
+    QJsonObject host;
+    host["host"] = hostname;
+    host["items"] = hostConfigs->value(hostname).toObject().value("items").toArray();
+    request->insert("request", host);
+    client->sendMessage(request);
+}
+
 void MonitoringData::getHostsData()
 {
     //Если нет подключения к серверу то запрос не отправляем
@@ -143,10 +159,27 @@ void MonitoringData::getHostsData()
         QJsonObject* request = new QJsonObject();
         request->insert("requestType","getHost");
         request->insert("uuid",QUuid::createUuid().toString());
-        request->insert("request", hostConfigs->value(host));
+        QJsonObject shortRequest;
+        shortRequest["summary"] = "true";
+        shortRequest["host"] = host;
+        request->insert("request", shortRequest);
         client->sendMessage(request);
     }
 }
+
+//void MonitoringData::getHostsData()
+//{
+//    //Если нет подключения к серверу то запрос не отправляем
+//    if(!getStatus()) return;
+
+//    foreach (QString host, hostConfigs->keys()) {
+//        QJsonObject* request = new QJsonObject();
+//        request->insert("requestType","getHost");
+//        request->insert("uuid",QUuid::createUuid().toString());
+//        request->insert("request", hostConfigs->value(host));
+//        client->sendMessage(request);
+//    }
+//}
 
 void MonitoringData::getGroupsData()
 {

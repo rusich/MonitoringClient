@@ -17,7 +17,7 @@ MonitoringClient::MonitoringClient(const QString hostAddress, int portNumber, QO
 
 void MonitoringClient::connectToServer()
 {
-    timeoutTimer->start(30000);
+    timeoutTimer->start(5000);
 
     serverSocket->connectToHost(host, port);
     connect(serverSocket,SIGNAL(connected()), this, SLOT(connected()));

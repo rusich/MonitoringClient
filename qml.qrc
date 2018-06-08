@@ -26,6 +26,21 @@
         <file>pages/Topaz.qml</file>
         <file>pages/DF2000.qml</file>
         <file>pages/Video.qml</file>
+        <file>pages/Home.qml</file>
+        <file>images/uvc-dome.png</file>
+        <file>images/uvc.png</file>
+        <file>images/powerbeam.png</file>
+        <file>images/ts-poe.png</file>
+        <file>images/drweb-server.png</file>
+        <file>images/workstation.png</file>
+        <file>images/backup-server.png</file>
+        <file>images/gateway-server.png</file>
+        <file>images/usergate-server.png</file>
+        <file>images/nvr-server.png</file>
+        <file>images/hyper-v-server.png</file>
+        <file>images/wsus-server.png</file>
+        <file>images/vers15-server.png</file>
+        <file>images/servers-bg.png</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>

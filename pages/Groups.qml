@@ -8,7 +8,7 @@ import "../functions.js" as JS
 Page {
 
     width: 1010
-    height: 630
+    height: 637
     anchors.fill: parent
     title: "Группы устройств"
 
@@ -48,5 +48,6 @@ Page {
             groupimg.source: "qrc:/images/nvr.png"
             onClicked: JS.nextPage("qrc:/pages/Video.qml", {"title": caption});
         }
+
     }
 }

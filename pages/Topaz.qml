@@ -7,7 +7,7 @@ import "../functions.js" as JS
 Page {
 
     width: 1010
-    height: 630
+    height: 637
     anchors.fill: parent
     property alias bgImage: bg.source
 

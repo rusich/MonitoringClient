@@ -28,7 +28,7 @@ ApplicationWindow {
     readonly property color widgetBgColor: "#323232"
     //⚙
     header: ToolBar {
-        contentHeight: toolButton.implicitHeight
+        contentHeight: 40
         Material.primary: toolBarColor
         ToolButton {
             id: toolButton
@@ -56,7 +56,7 @@ ApplicationWindow {
 
 
     footer: ToolBar {
-        contentHeight: toolButton2.implicitHeight
+        contentHeight: 55
         Material.primary: "black"
 
 

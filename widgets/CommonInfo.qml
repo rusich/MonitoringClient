@@ -11,6 +11,8 @@ Item {
     width: 400
     height: 150
 
+    property alias image: image.source
+
     WidgetTemplate {
         id: widgetTemplate
         anchors.rightMargin: 0
@@ -83,7 +85,6 @@ Item {
             anchors.topMargin: 31
             anchors.left: parent.left
             anchors.leftMargin: 8
-            source: "qrc:/images/server_icon.png"
         }
         Label {
             id: osLbl

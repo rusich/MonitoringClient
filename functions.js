@@ -42,3 +42,30 @@ function nextPage(template, properties) {
     return page;
 }
 
+function hlWdt(hostname) {
+    if(typeof host === "undefined")
+        return;
+    if(hostname===host.host){
+        if(host.triggersCount>0)
+        {
+            for(var i=0; i < host.triggersCount; i++){
+                var triggerid = host.triggers[i].triggerid;
+                if(typeof hilightTriggers === "undefined")
+                    continue;
+                if(hilightTriggers.length>0) {
+                    for(var j=0; j < hilightTriggers.length; j++) {
+                        if(hilightTriggers[j] === triggerid) {
+                            hilightWidget = true;
+                            return;
+                        }
+                    }
+
+                hilightWidget = false;
+                }
+            }
+        }
+        else {
+                hilightWidget = false;
+        }
+    }
+}

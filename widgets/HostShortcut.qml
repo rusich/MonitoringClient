@@ -42,7 +42,9 @@ Item {
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
         smooth: true
+        verticalAlignment: Image.AlignTop
         visible: false
+        source: "qrc:/images/server_icon.png"
     }
     DropShadow {
         id: effect
@@ -59,7 +61,7 @@ Item {
         id: hostname
         color: "#4797e6"
         font.bold: true
-        font.pixelSize: 14
+        font.pixelSize: parent.width/7
         text: host.name
         anchors.bottom: ip.top
         anchors.horizontalCenter: ip.horizontalCenter
@@ -67,7 +69,7 @@ Item {
     Text {
         id: ip
         color: "white"
-        font.pixelSize: 10
+        font.pixelSize: parent.width/8
         text: host.ip
         anchors.bottom: updown.top
         anchors.horizontalCenter: effect.horizontalCenter
@@ -79,7 +81,7 @@ Item {
         anchors.bottomMargin: -30
         anchors.horizontalCenter: effect.horizontalCenter
         anchors.horizontalCenterOffset: 10
-        fontSize: 12
+        fontSize: parent.width/7
         visible: host?true:false
         isUp: host["icmpping"].lastvalue === "1"
     }
@@ -101,13 +103,13 @@ Item {
         }
         visible: host? host.triggersCount>0? true: false: false
     }
-    Timer {
-        interval: 1000
-        repeat: true
-        running: true
-        onTriggered:  {
-           if(typeof host !=="undefined")
-               host = hosts[host.host];
+
+    Connections {
+        target: backend?backend:null
+        onHostUpdated:  {
+            if(host.host===hostname) {
+                host = hosts[hostname];
+            }
         }
     }
 }

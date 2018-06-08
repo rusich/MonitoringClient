@@ -42,6 +42,10 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.bottomMargin: 25
             anchors.horizontalCenter: parent.horizontalCenter
+            height: parent.height - 60
+            width: parent.width - 40
+            fillMode: Image.PreserveAspectFit
+            smooth: true
         }
 
         Rectangle {

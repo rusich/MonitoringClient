@@ -84,47 +84,10 @@ Item {
         visible: lastUpdatedInfo? true : false
     }
 
-    function hlWdt(hostname) {
-        if(typeof host === "undefined")
-            return;
-        if(hostname===host.host){
-            if(host.triggersCount>0)
-            {
-                for(var i=0; i < host.triggersCount; i++){
-                    var triggerid = host.triggers[i].triggerid;
-                    if(typeof hilightTriggers === "undefined")
-                        continue;
-                    if(hilightTriggers.length>0) {
-                        for(var j=0; j < hilightTriggers.length; j++) {
-                            if(hilightTriggers[j] === triggerid) {
-                                hilightWidget = true;
-                                return;
-                            }
-                        }
 
-                    hilightWidget = false;
-                    }
-                }
-            }
-            else {
-                    hilightWidget = false;
-            }
-        }
-    }
 
     Connections {
         target: backend?backend:null
-        onHostUpdated: hlWdt(hostname)
+        onHostUpdated: JS.hlWdt(hostname)
     }
-    Timer {
-        interval: 1000
-        repeat: true
-        running: true
-        onTriggered:  {
-           if(typeof host !=="undefined")
-               host = hosts[host.host];
-        }
-    }
-
-    Component.onCompleted: hlWdt(host.host)
 }

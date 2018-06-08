@@ -2,15 +2,16 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import "qrc:/widgets"
 import "qrc:/pages"
+import "../functions.js" as JS
 
 Page {
     property variant host
     width: 1010
-    height: 630
+    height: 637
     anchors.fill: parent
 
     title: host.name
-
+    property alias image: commInfo.image
 
     MemUsage {
         x: 590
@@ -53,6 +54,7 @@ Page {
     }
 
     CommonInfo {
+        id: commInfo
         x: 19
         y: 14
         width: 400
@@ -71,4 +73,22 @@ Page {
         visible: hostConfigs[host.host].graphs[1]? true: false
     }
 
+    Component.onCompleted: {
+        backend.getHost(host.host);
+    }
+
+    Timer {
+        interval: 10000; running: true; repeat: true
+        onTriggered: backend.getHost(host.host)
+    }
+
+    Connections {
+        target: backend?backend:null
+        onHostUpdated:  {
+            if(host.host===hostname) {
+                if(hosts[hostname].summary==="true") return;
+                host = hosts[hostname];
+            }
+        }
+    }
 }
