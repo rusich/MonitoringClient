@@ -27,23 +27,26 @@ Page {
             groupimg.source: "qrc:/images/server_icon.png"
             groupimg.width: 120
             groupimg.height: 120
-            caption: "Home"
+            caption: "Серверы"
             onClicked: JS.nextPage("qrc:/pages/Servers.qml", {"title": caption});
 
         }
         HostsGroup {
             caption: "КАСО Топаз-2000"
             groupimg.source: "qrc:/images/topaz.png"
+            onClicked: JS.nextPage("qrc:/pages/Topaz.qml", {"title": caption});
         }
 
         HostsGroup {
             caption: "АРП DF2000"
             groupimg.source: "qrc:/images/df200.png"
+            onClicked: JS.nextPage("qrc:/pages/DF2000.qml", {"title": caption});
         }
 
         HostsGroup {
             caption: "Видеонаблюдение"
             groupimg.source: "qrc:/images/nvr.png"
+            onClicked: JS.nextPage("qrc:/pages/Video.qml", {"title": caption});
         }
     }
 }

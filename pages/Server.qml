@@ -64,21 +64,11 @@ Page {
         x: 512
         y: 228
         width: 480
-        height: 186
+        height: 390
 
         graphid: hostConfigs[host.host].graphs[1].graphid
         period: hostConfigs[host.host].graphs[1].period
         visible: hostConfigs[host.host].graphs[1]? true: false
-    }
-
-    Graph {
-        x: 512
-        y: 425
-        width: 480
-        height: 193
-        visible: hostConfigs[host.host].graphs[2]? true: false
-        period: hostConfigs[host.host].graphs[2].period
-        graphid: hostConfigs[host.host].graphs[2].graphid
     }
 
 }

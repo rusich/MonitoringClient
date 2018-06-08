@@ -23,6 +23,9 @@
         <file>images/topaz.png</file>
         <file>widgets/HostShortcut.qml</file>
         <file>pages/Servers.qml</file>
+        <file>pages/Topaz.qml</file>
+        <file>pages/DF2000.qml</file>
+        <file>pages/Video.qml</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>

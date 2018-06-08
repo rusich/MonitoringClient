@@ -7,7 +7,7 @@
 MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(parent)
 {
     context = ctx;
-    client = new MonitoringClient("localhost", 9999);
+    client = new MonitoringClient("10.20.115.11", 9999);
     //setStatus(client->get_status());
 
     connect(client, &MonitoringClient::messageReceived, this, &MonitoringData::parseMessage);
@@ -30,8 +30,8 @@ MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(pare
     loadHosts();
 
     dataGetTimer = new QTimer(this);
-    connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getHostsData()));
     connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getGroupsData()));
+    connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getHostsData()));
 }
 
 bool MonitoringData::getStatus()
@@ -44,8 +44,8 @@ void MonitoringData::setStatus(bool newStatus)
     if (newStatus)
     {
         emit statusChanged("CONNECTED");
-        getHostsData();
         getGroupsData();
+        getHostsData();
         dataGetTimer->start(5000);
     }
     else

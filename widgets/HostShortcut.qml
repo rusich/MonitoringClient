@@ -19,11 +19,11 @@ Item {
         enabled: true
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: {
-            var page =  Qt.createComponent("qrc:/pages/Server.qml");
-            if(page.status === Component.Ready)
-                stackView.push(page,{"host": host});
-        }
+        onClicked:  item1.clicked()//{
+//            var page =  Qt.createComponent("qrc:/pages/Server.qml");
+//            if(page.status === Component.Ready)
+//                stackView.push(page,{"host": host});
+       // }
 
         onEntered: {
             cursorShape = Qt.PointingHandCursor;
@@ -51,7 +51,7 @@ Item {
         samples: 17
         horizontalOffset: 0
         verticalOffset: 0
-        color: "black"
+        color: shadowColor
         source: image
     }
 
@@ -60,7 +60,7 @@ Item {
         color: "#4797e6"
         font.bold: true
         font.pixelSize: 14
-        text: host.host
+        text: host.name
         anchors.bottom: ip.top
         anchors.horizontalCenter: ip.horizontalCenter
     }
@@ -100,5 +100,14 @@ Item {
             text: host.triggersCount
         }
         visible: host? host.triggersCount>0? true: false: false
+    }
+    Timer {
+        interval: 1000
+        repeat: true
+        running: true
+        onTriggered:  {
+           if(typeof host !=="undefined")
+               host = hosts[host.host];
+        }
     }
 }

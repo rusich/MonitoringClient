@@ -39,5 +39,6 @@ function nextPage(template, properties) {
     var page =  Qt.createComponent(template);
     if(page.status === Component.Ready)
         stackView.push(page,properties);
+    return page;
 }
 

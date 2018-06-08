@@ -1,4 +1,4 @@
-QT += charts quick network core
+QT += quick network core widgets
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use

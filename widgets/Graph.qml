@@ -36,7 +36,6 @@ Item {
                 anchors.fill: parent
                 onClicked:
                 {
-                    console.log(graphid);
                     backend.getGraph(graphid,
                                      period,
                                      graphimg.width,
@@ -49,8 +48,6 @@ Item {
     Connections {
         target: backend?backend:null
         onGraphUpdated:  {
-           console.log(graph.graphid);
-           console.log(graph.name);
            if(graph.graphid === graphid)
            {
 //               widgetTemplate.caption = graph.name;

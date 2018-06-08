@@ -62,7 +62,9 @@ Item {
     Label {
         id: clockSymbol
         anchors.right: updateDateTime.left
-        anchors.verticalCenter: updateDateTime.verticalCenter
+//        anchors.verticalCenter: updateDateTime.verticalCenter
+        anchors.top: updateDateTime.top
+        anchors.topMargin: -7
         anchors.rightMargin: 3
         text: qsTr("⌚")
         font.pointSize: 12
@@ -114,5 +116,15 @@ Item {
         target: backend?backend:null
         onHostUpdated: hlWdt(hostname)
     }
+    Timer {
+        interval: 1000
+        repeat: true
+        running: true
+        onTriggered:  {
+           if(typeof host !=="undefined")
+               host = hosts[host.host];
+        }
+    }
+
     Component.onCompleted: hlWdt(host.host)
 }
