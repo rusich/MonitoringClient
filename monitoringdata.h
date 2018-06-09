@@ -6,6 +6,7 @@
 #include <QQmlPropertyMap>
 #include <QTimer>
 #include "monitoringclient.h"
+#include "settings.h"
 
 class MonitoringData : public QObject
 {
@@ -14,6 +15,7 @@ class MonitoringData : public QObject
 
 public:
     explicit MonitoringData(QQmlContext* ctx, QObject *parent = nullptr);
+    ~MonitoringData();
     bool getStatus();
 
 public slots:
@@ -33,6 +35,8 @@ signals:
     void messageReceived(QJsonObject* jsonReply);
     void graphUpdated(const QVariant graph);
     void hostUpdated(const QString hostname);
+    void netIn();
+    void netOut();
 
 
 private:
@@ -46,6 +50,7 @@ private:
     QQmlPropertyMap* groupsMapping;
     QTimer* dataGetTimer;
     void loadHosts();
+    Settings* settings;
 };
 
 #endif // BACKEND_H

@@ -41,6 +41,7 @@
         <file>images/wsus-server.png</file>
         <file>images/vers15-server.png</file>
         <file>images/servers-bg.png</file>
+        <file>widgets/NetInOut.qml</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>

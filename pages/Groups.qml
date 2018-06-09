@@ -10,7 +10,7 @@ Page {
     width: 1010
     height: 637
     anchors.fill: parent
-    title: "Группы устройств"
+    title: backend.currentStatus?"Группы устройств":""
 
 
     GridLayout {

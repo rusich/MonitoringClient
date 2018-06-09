@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import "qrc:/widgets"
 import "qrc:/pages"
 import "../functions.js" as JS
+import MonitoringClient.Settings 1.0
 
 Page {
     property variant host
@@ -14,7 +15,7 @@ Page {
     property alias image: commInfo.image
 
     MemUsage {
-        x: 590
+        x: 560
         y: 14
         width: 193
         height: 105
@@ -23,14 +24,14 @@ Page {
     CpuUsage {
         x: 428
         y: 14
-        width: 153
+        width: 126
         height: 105
     }
 
     FsUsage {
-        x: 792
+        x: 759
         y: 14
-        width: 200
+        width: 233
         height: 105
 
     }
@@ -78,7 +79,7 @@ Page {
     }
 
     Timer {
-        interval: 10000; running: true; repeat: true
+        interval: Settings.updateInterval; running: true; repeat: true
         onTriggered: backend.getHost(host.host)
     }
 

@@ -14,6 +14,7 @@ Item {
     property alias image: image
     signal clicked()
     property color shadowColor: host.triggersCount>0?"red":"black"
+    visible: host? true: false
     MouseArea {
         id: ma
         enabled: true

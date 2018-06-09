@@ -6,9 +6,12 @@
 
 MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(parent)
 {
+    settings = Settings::Instance();
+    qDebug()<<settings->username;
     context = ctx;
-    client = new MonitoringClient("10.10.0.12", 9999);
-//    client = new MonitoringClient("localhost", 9999);
+    client = new MonitoringClient();
+    connect(client, SIGNAL(netIn()), this, SIGNAL(netIn()));
+    connect(client, SIGNAL(netOut()), this, SIGNAL(netOut()));
     //setStatus(client->get_status());
 
     connect(client, &MonitoringClient::messageReceived, this, &MonitoringData::parseMessage);
@@ -35,6 +38,11 @@ MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(pare
     connect(dataGetTimer, SIGNAL(timeout()), this, SLOT(getHostsData()));
 }
 
+MonitoringData::~MonitoringData()
+{
+//    settings->writeSettings();
+}
+
 bool MonitoringData::getStatus()
 {
     return client->getStatus();
@@ -47,7 +55,7 @@ void MonitoringData::setStatus(bool newStatus)
         emit statusChanged("CONNECTED");
         getGroupsData();
         getHostsData();
-        dataGetTimer->start(30000);
+        dataGetTimer->start(settings->updateInterval);
     }
     else
     {
@@ -127,7 +135,7 @@ void MonitoringData::gotError(QAbstractSocket::SocketError err)
 
 void MonitoringData::connectClicked()
 {
-    client->connectToServer();
+    client->connectToServer(settings->serverHostname, settings->serverPort);
 }
 
 void MonitoringData::disconnectClicked()
@@ -167,19 +175,6 @@ void MonitoringData::getHostsData()
     }
 }
 
-//void MonitoringData::getHostsData()
-//{
-//    //Если нет подключения к серверу то запрос не отправляем
-//    if(!getStatus()) return;
-
-//    foreach (QString host, hostConfigs->keys()) {
-//        QJsonObject* request = new QJsonObject();
-//        request->insert("requestType","getHost");
-//        request->insert("uuid",QUuid::createUuid().toString());
-//        request->insert("request", hostConfigs->value(host));
-//        client->sendMessage(request);
-//    }
-//}
 
 void MonitoringData::getGroupsData()
 {

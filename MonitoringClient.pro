@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     monitoringclient.cpp \
-    monitoringdata.cpp
+    monitoringdata.cpp \
+    settings.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,7 +35,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     monitoringdata.h \
-    monitoringclient.h
+    monitoringclient.h \
+    settings.h
 
 DISTFILES += \
     hosts/server.json \

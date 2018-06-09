@@ -17,14 +17,14 @@ class MonitoringClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit MonitoringClient(const QString hostAddress, int portNumber, QObject *parent = nullptr);
+    explicit MonitoringClient(QObject *parent = nullptr);
 
     QTcpSocket* serverSocket;
     bool getStatus();
     quint64 sendMessage(QJsonObject *jsonRequest);
 
 public slots:
-    void connectToServer();
+    void connectToServer(const QString hostAddress, int portNumber);
     void closeConnection();
     void connected();
     void connectionTimeout();
@@ -34,6 +34,8 @@ public slots:
 signals:
     void statusChanged(bool);
     void messageReceived(QJsonObject* jsonReply);
+    void netIn();
+    void netOut();
 
 private:
     QString host;

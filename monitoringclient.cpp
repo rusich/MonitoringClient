@@ -1,12 +1,10 @@
 #include "monitoringclient.h"
 
-MonitoringClient::MonitoringClient(const QString hostAddress, int portNumber, QObject *parent)
+MonitoringClient::MonitoringClient(QObject *parent)
     : QObject(parent), nextMessageSize(0)
 {
     status = false;
     serverSocket = new QTcpSocket();
-    this->host = hostAddress;
-    this->port = portNumber;
 
     timeoutTimer = new QTimer();
     timeoutTimer->setSingleShot(true);
@@ -15,11 +13,11 @@ MonitoringClient::MonitoringClient(const QString hostAddress, int portNumber, QO
     connect(serverSocket, SIGNAL(disconnected()), this, SLOT(closeConnection()));
 }
 
-void MonitoringClient::connectToServer()
+void MonitoringClient::connectToServer(const QString hostAddress, int portNumber)
 {
     timeoutTimer->start(5000);
 
-    serverSocket->connectToHost(host, port);
+    serverSocket->connectToHost(hostAddress, portNumber);
     connect(serverSocket,SIGNAL(connected()), this, SLOT(connected()));
     connect(serverSocket,SIGNAL(readyRead()), this, SLOT(readMessage()));
 }
@@ -54,10 +52,8 @@ quint64 MonitoringClient::sendMessage(QJsonObject *jsonRequest)
     out << quint16(0) << compressedMessage;
     out.device()->seek(0);
     out << quint16(sendBuff.size() - sizeof(quint16));
-//    qDebug()<<"SEND: U:"<<uncompressedMessage.size()
-//           << "b C:" << compressedMessage.size()
-//           << "b R:" << (float) uncompressedMessage.size()/
-//              compressedMessage.size() << "%";
+
+    emit netOut();
     return serverSocket->write(sendBuff);
 }
 
@@ -66,6 +62,7 @@ void MonitoringClient::readMessage()
     QDataStream in(serverSocket);
     while(true)
     {
+        emit netIn();
         if(!nextMessageSize)
         {
             if((quint64)serverSocket->bytesAvailable()<sizeof(quint16)) {break;}
@@ -98,7 +95,7 @@ void MonitoringClient::closeConnection()
 {
     timeoutTimer->stop();
 
-    //qDebug() << tcpSocket->state();
+    qDebug() << serverSocket->state();
     disconnect(serverSocket, &QTcpSocket::connected, 0, 0);
     disconnect(serverSocket, &QTcpSocket::readyRead, 0, 0);
 

@@ -7,7 +7,7 @@ Item {
     width: 200
     height: 18
 
-    property color bgColor: "#353638"
+    property color bgColor: "gray"
     property color color: "green"
     property double value: 0
     property double from: 0
