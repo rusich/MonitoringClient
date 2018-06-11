@@ -2,10 +2,14 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFileInfoList>
+#include <unistd.h>
+#include <QCryptographicHash>
 #include "monitoringdata.h"
+#include "../MonitoringServer/errors.h"
 
 MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(parent)
 {
+    authorizedOnServer = false;
     settings = Settings::Instance();
     qDebug()<<settings->username;
     context = ctx;
@@ -40,7 +44,7 @@ MonitoringData::MonitoringData(QQmlContext *ctx, QObject *parent) : QObject(pare
 
 MonitoringData::~MonitoringData()
 {
-//    settings->writeSettings();
+    //    settings->writeSettings();
 }
 
 bool MonitoringData::getStatus()
@@ -53,14 +57,15 @@ void MonitoringData::setStatus(bool newStatus)
     if (newStatus)
     {
         emit statusChanged("CONNECTED");
-        getGroupsData();
-        getHostsData();
-        dataGetTimer->start(settings->updateInterval);
+        authOnServer();
     }
     else
     {
         emit statusChanged("DISCONNECTED");
         dataGetTimer->stop();
+        authorizedOnServer = false;
+        authorizedUserName = "";
+        emit authUNChanged(authorizedUserName);
     }
 }
 
@@ -86,7 +91,7 @@ void MonitoringData::parseMessage(QJsonObject* jsonReply)
             groups->insert(groupName,
                            replyData[replyData.keys()[i]]);
             groupsMapping->insert(groupName,
-                QVariant::fromValue(groups->value(groupName)));
+                                  QVariant::fromValue(groups->value(groupName)));
         }
 
     }
@@ -94,13 +99,32 @@ void MonitoringData::parseMessage(QJsonObject* jsonReply)
     {
         if(replyData["graphid"].toString().trimmed()!="")
         {
-//            QVariant* graph = new QVariant(replyData);
+            //            QVariant* graph = new QVariant(replyData);
             emit graphUpdated(QVariant::fromValue(replyData));
         }
+    }
+    else if (replyType == "authSuccess")
+    {
+        authorizedOnServer = true;
+        authorizedUserName = replyData["FullName"].toString();
+        authUNChanged(authorizedUserName);
+        getHostsData();
+        getGroupsData();
+        dataGetTimer->start(settings->updateInterval);
     }
     else if (replyType == "error")
     {
         emit error("Сервер сообщил об ошибке: " + replyData["errorMsg"].toString());
+        if(replyData["errorId"].toInt() == ErrorType::NotAuthorized)
+            client->closeConnection();
+        if(replyData["errorId"].toInt() == ErrorType::IncorrectUserOrPassword)
+            client->closeConnection();
+        if(replyData["errorId"].toInt() == ErrorType::NoSuchHost) {
+            hostConfigs->remove(replyData["host"].toString());
+        }
+        if(replyData["errorId"].toInt() == ErrorType::HostAccessDenied) {
+            hostConfigs->remove(replyData["host"].toString());
+        }
     }
     else
     {
@@ -147,6 +171,7 @@ void MonitoringData::getHost(QString hostname)
 {
     //Если нет подключения к серверу то запрос не отправляем
     if(!getStatus()) return;
+    if(!authorizedOnServer) return;
 
     QJsonObject* request = new QJsonObject();
     request->insert("requestType","getHost");
@@ -162,6 +187,7 @@ void MonitoringData::getHostsData()
 {
     //Если нет подключения к серверу то запрос не отправляем
     if(!getStatus()) return;
+    if(!authorizedOnServer) return;
 
     foreach (QString host, hostConfigs->keys()) {
         QJsonObject* request = new QJsonObject();
@@ -180,6 +206,7 @@ void MonitoringData::getGroupsData()
 {
     //Если нет подключения к серверу то запрос не отправляем
     if(!getStatus()) return;
+    if(!authorizedOnServer) return;
     QJsonObject* request = new QJsonObject();
     request->insert("requestType","getGroups");
     request->insert("uuid",QUuid::createUuid().toString());
@@ -190,6 +217,7 @@ void MonitoringData::getGraph(int graphid, int period, int width, int height)
 {
     //Если нет подключения к серверу то запрос не отправляем
     if(!getStatus()) return;
+    if(!authorizedOnServer) return;
     QJsonObject* request = new QJsonObject();
     request->insert("requestType","getGraph");
     request->insert("uuid",QUuid::createUuid().toString());
@@ -198,6 +226,21 @@ void MonitoringData::getGraph(int graphid, int period, int width, int height)
     params["period"] = period;
     params["width"] = width;
     params["height"] = height;
+    request->insert("request",params);
+    client->sendMessage(request);
+}
+
+void MonitoringData::authOnServer()
+{
+    //Если нет подключения к серверу то запрос не отправляем
+    if(!getStatus()) return;
+    QJsonObject* request = new QJsonObject();
+    request->insert("requestType","auth");
+    request->insert("uuid",QUuid::createUuid().toString());
+    QJsonObject params;
+    params["username"] = settings->username;
+    params["password"] = QString(QCryptographicHash::hash(settings->password.toUtf8(),
+                                                          QCryptographicHash::Md5).toHex());
     request->insert("request",params);
     client->sendMessage(request);
 }

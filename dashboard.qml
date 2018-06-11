@@ -47,14 +47,27 @@ ApplicationWindow {
             anchors.centerIn: parent
         }
 
-        ToolButton {
-            id: settingsBtn
+        Image {
+            id: userPic
+            source: "qrc:/images/user.png"
+            anchors.right: fullName.left
+            anchors.rightMargin: 5
+            anchors.verticalCenter: fullName.verticalCenter
+            width: 25
+            height: width
+            smooth: true
+            visible: fullName.text.length>0? true: false
+
+        }
+
+        Label {
+            id: fullName
             anchors.right: parent.right
-            text: "⚙"
-            font.pixelSize: 20
-            onClicked: {
-                settingsDialog.open();
-            }
+            anchors.top: parent.top
+            anchors.topMargin: 14
+            anchors.rightMargin: 10
+            text: backend.authorizedUserName
+            font.pixelSize: 15
         }
     }
 
@@ -126,6 +139,17 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignRight
                 anchors.topMargin: 10
                 anchors.top: parent.top
+                anchors.right: settingsBtn.left
+            }
+
+            ToolButton {
+                id: settingsBtn
+                anchors.right: parent.right
+                text: "⚙"
+                font.pixelSize: 30
+                onClicked: {
+                    settingsDialog.open();
+                }
             }
         }
     }

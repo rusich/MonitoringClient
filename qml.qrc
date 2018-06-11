@@ -42,6 +42,7 @@
         <file>images/vers15-server.png</file>
         <file>images/servers-bg.png</file>
         <file>widgets/NetInOut.qml</file>
+        <file>images/user.png</file>
     </qresource>
     <qresource prefix="/widgets"/>
 </RCC>
